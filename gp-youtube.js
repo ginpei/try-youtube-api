@@ -100,18 +100,24 @@ var GpYoutube = (function() {
 		if (window.onYouTubePlayerReady && window.onYouTubePlayerReady !== Video.f_onYouTubePlayerReady) {
 			throw new Error('YouTube event handler is already set.');
 		}
-		window.onYouTubePlayerReady = Video.f_onYouTubePlayerReady;
+		window.onYouTubePlayerReady = Video.f_onYouTubePlayerReady.bind(Video);
 	};
 
 	Video.f_onYouTubePlayerReady = function(playerId) {
-		console.log(playerId);
+		var instance = this._instances[playerId];
+		if (instance) {
+			instance.onplayerready();
+		}
 	};
 
 	Video.setPlayerId = function(instance) {
 		var count = this._idCount || 1;
-		instance.playerId = 'gpyoutube-' + count;
+		var id = instance.playerId = 'gpyoutube-' + count;
 		this._idCount = count + 1;
+		this._instances[id] = instance;
 	};
+
+	Video._instances = {};
 
 	var __vp = Video.prototype;
 
@@ -135,6 +141,8 @@ var GpYoutube = (function() {
 			type: 'application/x-shockwave-flash',
 			width: 420
 		});
+		this.$embed = $embed;
+		this.elEmbed = $embed[0];
 
 		$el.append($embed);
 	};
@@ -143,6 +151,70 @@ var GpYoutube = (function() {
 		var url = 'http://www.youtube.com/v/' + this.id +
 			'?version=3&enablejsapi=1&playerapiid=' + this.playerId;
 		return url;
+	};
+
+	__vp.play = function() {
+		this.elEmbed.playVideo();
+	};
+
+	__vp.pause = function() {
+		this.elEmbed.pauseVideo();
+	};
+
+	__vp.stop = function() {
+		this.elEmbed.stopVideo();
+	};
+
+	__vp.mute = function() {
+		this.elEmbed.mute();
+	};
+
+	__vp.unmute = function() {
+		this.elEmbed.unMute();
+	};
+
+	__vp.getCurrentTime = function() {
+		return this.elEmbed.getCurrentTime();
+	};
+
+	__vp.updateTime = function() {
+		var currentTime = this.getCurrentTime();
+		var currentTimeText =
+			parseInt(currentTime/60, 10) +
+			':' +
+			('0' + parseInt(currentTime%60, 10)).slice(-2);
+		$('.js-current-time').text(currentTimeText);
+
+		var duration = this.getDuration();
+		var durationText =
+			parseInt(duration/60, 10) +
+			':' +
+			('0' + parseInt(duration%60, 10)).slice(-2);
+		$('.js-duration').text(durationText);
+	};
+
+	__vp.getCurrentTime = function() {
+		return this.elEmbed.getCurrentTime();
+	};
+
+	__vp.getDuration = function() {
+		return this.elEmbed.getDuration();
+	};
+
+	__vp.on = function(type, callback) {
+		var callbackName = (this.playerId + '-' + type).replace(/-/g, '_');
+		window[callbackName] = callback;
+		this.elEmbed.addEventListener(type, callbackName);
+	};
+
+	__vp.onplayerready = function() {
+		$('.js-video-controll-button').attr('disabled', false);
+		setInterval(this.updateTime.bind(this), 250);
+		this.on('onStateChange', this.onstatechange.bind(this));
+	};
+
+	__vp.onstatechange = function(state) {
+		console.log(':statechange', state);
 	};
 
 	// ----------------------------------------------------------------
