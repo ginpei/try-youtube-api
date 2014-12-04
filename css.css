@@ -3,4 +3,6 @@
 }
 .thumbnail-thumbnail {
 	cursor: pointer;
+	height: 90px;
+	width: 120px;
 }
