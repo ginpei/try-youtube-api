@@ -11,12 +11,13 @@
 				https://www.youtube.com/playlist?list=<input class="controller-playlist-id js-playlist-id" type="text" placeholder="PL0000000000000000" value="PLB9E643D2A840D9E0" />
 				<button>Load</button>
 			</form>
+			<div class="js-player"></div>
 			<div class="js-thumbnails"></div>
 		</div>
 		<script id="template-thumbnail" type="text/x-template">
-			<div class="thumbnail">
+			<div class="thumbnail js-thumbnail" data-id="<%- id %>">
 				<h2 class="thumbnail-title"><%- title %></h2>
-				<img class="thumbnail-thumbnail" src="<%- thumbnailSrc %>" />
+				<img class="thumbnail-thumbnail js-thumbnail-play" src="<%- thumbnailSrc %>" />
 				<div class="thumbnail-description"><%- description %></div>
 			</div>
 		</script>

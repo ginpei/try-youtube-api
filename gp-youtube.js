@@ -8,13 +8,13 @@ var GpYoutube = (function() {
 		}
 	}
 
-	var __p = Playlist.prototype;
+	var __pp = Playlist.prototype;
 
 	/**
 	 * Called in constructor.
 	 * @param {Object} options
 	 */
-	__p.initialize = function(options) {
+	__pp.initialize = function(options) {
 		this.appKey = options.appKey;
 		this.id = options.id;
 
@@ -28,7 +28,7 @@ var GpYoutube = (function() {
 	/**
 	 * Fetch playlist items.
 	 */
-	__p.fetch = function(callback) {
+	__pp.fetch = function(callback) {
 		var url = this._getFetchUrl();
 		return $.getJSON(url, function(data, status, xhr) {
 			this._resetData(data);
@@ -40,7 +40,7 @@ var GpYoutube = (function() {
 	 * Return the URL to be used to fetch playlist data.
 	 * @returns {string}
 	 */
-	__p._getFetchUrl = function() {
+	__pp._getFetchUrl = function() {
 		var url = 'https://www.googleapis.com/youtube/v3/playlistItems' +
 			'?key=' + this.appKey +
 			'&maxResults=50' +
@@ -54,13 +54,13 @@ var GpYoutube = (function() {
 	 * Reset playlist items data.
 	 * @param {Object} data
 	 */
-	__p._resetData = function(data) {
+	__pp._resetData = function(data) {
 		var items = this.items = data.items;
 		this.length = items.length;
 		this.forEach(this._resetOneData.bind(this, items));
 	};
 
-	__p._resetOneData = function(items, __empty__, index) {
+	__pp._resetOneData = function(items, __empty__, index) {
 		var item = items[index];
 		var snippet = item.snippet;
 		this[index] = {
@@ -77,14 +77,59 @@ var GpYoutube = (function() {
 	 * Run iterator for each items.
 	 * @param {Function} iterator
 	 */
-	__p.forEach = function(iterator) {
+	__pp.forEach = function(iterator) {
 		for (var i=0, l=this.length; i<l; i++) {
 			iterator.call(this, this[i], i);
 		}
 		return this;
 	};
 
+	// ----------------------------------------------------------------
+
+	function Video(options) {
+		if (this instanceof Video) {
+			return this.initialize(options);
+		}
+		else {
+			return new Video(options);
+		}
+	}
+
+	var __vp = Video.prototype;
+
+	/**
+	 * Called in constructor.
+	 * @param {Object} options
+	 */
+	__vp.initialize = function(options) {
+		this.id = options.id;
+	};
+
+	__vp.renderInto = function($el) {
+		var url = this._getVideoUrl();
+
+		var $embed = $('<embed>', {
+			allowScriptAccess: 'always',
+			height: 315,
+			name: 'plugin',
+			src: url,
+			type: 'application/x-shockwave-flash',
+			width: 420
+		});
+
+		$el.append($embed);
+	};
+
+	__vp._getVideoUrl = function() {
+		var url = 'http://www.youtube.com/v/' + this.id +
+			'?version=3&enablejsapi=1'; //&playerapiid=ytplayer'
+		return url;
+	};
+
+	// ----------------------------------------------------------------
+
 	return {
-		Playlist: Playlist
+		Playlist: Playlist,
+		Video: Video
 	};
 })();

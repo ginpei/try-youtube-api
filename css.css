@@ -1,3 +1,6 @@
 .controller-playlist-id {
 	width: 20em;
 }
+.thumbnail-thumbnail {
+	cursor: pointer;
+}
