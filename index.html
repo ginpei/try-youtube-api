@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css.css" />
+		<title>Youtube API - Playlist</title>
+	</head>
+	<body>
+		<div class="controller">
+			<form class="js-playlist-form">
+				https://www.youtube.com/playlist?list=<input class="controller-playlist-id js-playlist-id" type="text" placeholder="PL0000000000000000" value="PLB9E643D2A840D9E0" />
+				<button>Load</button>
+			</form>
+			<div class="js-thumbnails"></div>
+		</div>
+		<script id="template-thumbnail" type="text/x-template">
+			<div class="thumbnail">
+				<h2 class="thumbnail-title"><%- title %></h2>
+				<img class="thumbnail-thumbnail" src="<%- thumbnailSrc %>" />
+				<div class="thumbnail-description"><%- description %></div>
+			</div>
+		</script>
+		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+		<script src="gp-youtube.js"></script>
+		<script src="js.js"></script>
+	</body>
+</html>
