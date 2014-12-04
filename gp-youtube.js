@@ -88,12 +88,30 @@ var GpYoutube = (function() {
 
 	function Video(options) {
 		if (this instanceof Video) {
+			Video.initializeHandler();
 			return this.initialize(options);
 		}
 		else {
 			return new Video(options);
 		}
 	}
+
+	Video.initializeHandler = function() {
+		if (window.onYouTubePlayerReady && window.onYouTubePlayerReady !== Video.f_onYouTubePlayerReady) {
+			throw new Error('YouTube event handler is already set.');
+		}
+		window.onYouTubePlayerReady = Video.f_onYouTubePlayerReady;
+	};
+
+	Video.f_onYouTubePlayerReady = function(playerId) {
+		console.log(playerId);
+	};
+
+	Video.setPlayerId = function(instance) {
+		var count = this._idCount || 1;
+		instance.playerId = 'gpyoutube-' + count;
+		this._idCount = count + 1;
+	};
 
 	var __vp = Video.prototype;
 
@@ -102,6 +120,7 @@ var GpYoutube = (function() {
 	 * @param {Object} options
 	 */
 	__vp.initialize = function(options) {
+		Video.setPlayerId(this);
 		this.id = options.id;
 	};
 
@@ -122,7 +141,7 @@ var GpYoutube = (function() {
 
 	__vp._getVideoUrl = function() {
 		var url = 'http://www.youtube.com/v/' + this.id +
-			'?version=3&enablejsapi=1'; //&playerapiid=ytplayer'
+			'?version=3&enablejsapi=1&playerapiid=' + this.playerId;
 		return url;
 	};
 
