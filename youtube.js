@@ -35,6 +35,27 @@ YouTube = (function() {
 
 			// TODO: outsource
 			$('.js-video-control').attr('disabled', false);
+			setInterval(function() {
+				try {
+					var currentTime = instance.getCurrentTime();
+					var duration = instance.getDuration();
+
+					var currentTimeText =
+						parseInt(currentTime/60, 10) +
+						':' +
+						('0' + parseInt(currentTime%60, 10)).slice(-2);
+					$('.js-current-time').text(currentTimeText);
+
+					var durationText =
+						parseInt(duration/60, 10) +
+						':' +
+						('0' + parseInt(duration%60, 10)).slice(-2);
+					$('.js-duration').text(durationText);
+				}
+				catch (error) {
+					// ignore
+				}
+			}.bind(this), 200);
 		}
 	});
 
