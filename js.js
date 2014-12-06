@@ -5,6 +5,10 @@
 			this.$player = $('.js-player');
 
 			$('.js-open-video-form').on('submit', this.onsubmitOpenVideo.bind(this));
+			$('.js-play').on('click', function() { this._player.play() }.bind(this));
+			$('.js-pause').on('click', function() { this._player.pause() }.bind(this));
+			$('.js-mute').on('click', function() { this._player.mute() }.bind(this));
+			$('.js-unmute').on('click', function() { this._player.mute(false) }.bind(this));
 		},
 
 		openVideo: function(id) {

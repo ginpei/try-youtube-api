@@ -32,6 +32,9 @@ YouTube = (function() {
 			if (instance) {
 				instance.onplayerready();
 			}
+
+			// TODO: outsource
+			$('.js-video-control').attr('disabled', false);
 		}
 	});
 
@@ -92,8 +95,34 @@ YouTube = (function() {
 			}
 		},
 
+		play: function() {
+			this.elEmbed.playVideo();
+		},
+
+		pause: function() {
+			this.elEmbed.pauseVideo();
+		},
+
+		mute: function(flag) {
+			if (flag || arguments.length < 1) {
+				this.elEmbed.mute();
+			}
+			else {
+				this.elEmbed.unMute();
+			}
+		},
+
+		getCurrentTime: function() {
+			return this.elEmbed.getCurrentTime();
+		},
+
+		getDuration: function() {
+			return this.elEmbed.getDuration();
+		},
+
 		onplayerready: function() {
 			this.playerReady = true;
+
 			if (this._afterPlayerReady) {
 				this._afterPlayerReady();
 			}
