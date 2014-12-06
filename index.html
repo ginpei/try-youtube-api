@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css.css" />
+		<title>Youtube API - Playlist</title>
+	</head>
+	<body>
+		<div class="base-block video-block">
+			<h1>Video</h1>
+			<form class="js-open-video-form">
+				https://www.youtube.com/watch?v=<input class="video-id js-video-id" type="text" placeholder="pSU2qJJOnRQ" value="pSU2qJJOnRQ" />
+				<button>Open</button>
+			</form>
+			<div class="video-player js-player"></div>
+			<div class="video-controller-block">
+				<button class="js-video-controll js-play" role="button" disabled>Play</button>
+				<button class="js-video-controll js-pause" role="button" disabled>Pause</button>
+				<button class="js-video-controll js-stop" role="button" disabled>Stop</button>
+				<button class="js-video-controll js-mute" role="button" disabled>Mute</button>
+				<button class="js-video-controll js-unmute" role="button" disabled>Unmute</button>
+				<span class="js-current-time">0:00</span>/<span class="js-duration">0:00</span>
+				<span class="js-video-status">Ready.</span>
+			</div>
+		</div>
+		<div class="base-block playlist-block">
+			<h1>Playlist</h1>
+			<form class="js-load-playlist-form">
+				https://www.youtube.com/playlist?list=<input class="playlist-id js-playlist-id" type="text" placeholder="PLB9E643D2A840D9E0" value="PLB9E643D2A840D9E0" disabled />
+				<button disabled>Load</button>
+			</form>
+			<div class="js-thumbnails"></div>
+		</div>
+		<script class="js-template-playlist-item" type="text/x-template">
+			<div class="thumbnail js-thumbnail" data-id="<%- id %>">
+				<h2 class="thumbnail-title"><%- title %></h2>
+				<img class="thumbnail-thumbnail js-thumbnail-play" src="<%- thumbnailSrc %>" />
+				<div class="thumbnail-description"><%- description %></div>
+			</div>
+		</script>
+		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+		<!-- script src="//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js"></script -->
+		<script src="youtube.js"></script>
+		<script src="js.js"></script>
+	</body>
+</html>

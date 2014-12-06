@@ -1,0 +1,19 @@
+h1 {
+	margin: 0;
+}
+.base-block {
+	border: double 3px #999;
+	margin-bottom: 20px;
+	padding: 20px;
+}
+.video-id {
+	width: 100px;
+}
+.video-player {
+	background-color: #000;
+	height: 315px;
+	width: 420px;
+}
+.playlist-id {
+	width: 200px;
+}
