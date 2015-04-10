@@ -1,3 +1,10 @@
+(function() {
+	var url = 'https://www.youtube.com/iframe_api';
+	var elScript = document.createElement('script');
+	elScript.src = url;
+	document.body.appendChild(elScript);
+})();
+
 window.onYouTubeIframeAPIReady = function() {
 	console.log('YouTubeIframeAPIReady');
 
